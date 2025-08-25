@@ -1,0 +1,26 @@
+@page "/profile"
+@inject HttpClient Http
+
+<h3>Användarprofil</h3>
+
+@if (user is null)
+{
+    <p>Laddar...</p>
+}
+else
+{
+    <img src="@user.ImageUrl" alt="profil" />
+    <p>@user.Name</p>
+    <p>@user.Email</p>
+}
+
+@code {
+    private User? user;
+
+    protected override async Task OnInitializedAsync()
+    {
+        user = await Http.GetFromJsonAsync<User>("api/users/1");
+    }
+
+    public record User(int Id, string Name, string Email, string ImageUrl);
+}
